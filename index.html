@@ -2,7 +2,17 @@
 <html><head>
 <meta charset='UTF-8'>
 <title>unloaded</title>
-<script src='ref.js' charset='UTF-8' defer></script>
+<script>
+onload=()=>navigator.serviceWorker.getRegistrations()
+  .then(o=>Promise.all(o.map(w=>w&&w.scope.startsWith('https://zhishi.oss-cn-beijing.aliyuncs.com/sw')&&w.unregister())))
+  .then(()=>({then(r){setTimeout(r,500)}}))
+  .then(()=>navigator.serviceWorker.register('sw.js'))
+  .then(sw=>{
+    sw.onupdatefound=()=>{
+      open('./proc/0/')
+    }
+  })
+</script>
 </head><body>
 unloaded
 </body></html>
