@@ -16,12 +16,13 @@ onload=()=>{
     method:'PUT',body:new Uint8Array(65536).map(()=>Math.random()*256)
     ,headers:{'content-type':'text/html'}
   }).then(r=>r.ok&&r.json()).then(o=>o.code/100^2?{then(r,j){j(new Error('创建失败'))}}:open(u));
+  bts.fd=u=>location.href=u||location.hash.slice(1)||'function'===typeof URLSearchParams&&new URLSearchParams(location.search).get('tar')||'./main'
   count();
 }
 </script>
 </head><body>
 <p id='tip'>...</p>
-<a href='./main/'>主页</a>
+<a href='javascript:void(bts.fd())'>跳转链接</a>
 <a href="javascript:void(bts.exec(this,bts.load))">装载</a>
 <a href="javascript:void(bts.exec(this,bts.unload))">卸载</a>
 <a href="javascript:void(bts.exec(this,bts.test))">开个随机页面试试</a>
