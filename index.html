@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset='UTF-8'>
-<title>unloaded</title>
+<title>代理服务器管理页</title>
 <script>
-onload=()=>navigator.serviceWorker.getRegistrations()
-  .then(o=>Promise.all(o.map(w=>w&&w.scope.startsWith('https://zhishi.oss-cn-beijing.aliyuncs.com/sw')&&w.unregister())))
-  .then(()=>({then(r){setTimeout(r,500)}}))
-  .then(()=>navigator.serviceWorker.register('sw.js'))
-  .then(sw=>{
-    sw.onupdatefound=()=>{
-      open('./proc/0/')
-    }
-  })
+self.bts={};
+onload=()=>{
+  var tar=[],t=document.getElementById('tip')
+  ,count=()=>navigator.serviceWorker.getRegistrations()
+    .then(o=>(tar=[],o.forEach(w=>{w&&w.scope.indexOf('/reflect')&&tar.push(w)})))
+    .then(()=>t.innerText=`${tar&&tar.length|0}个已装载的代理服务器。`)
+  bts.load=()=>navigator.serviceWorker.register('sw.js').then(w=>new Promise(r=>w.onupdatefound=r));
+  bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(n=>n.length);
+  bts.exec=(t,f)=>(t.color='#eee',f().then(()=>t.color='#666',()=>t.color='#f00').finally(count));
+  bts.test=u=>fetch(u||=`./test/${Math.random()*10000|0}`,{
+    method:'PUT',body:new Uint8Array(65536).map(()=>Math.random()*256)
+    ,headers:{'content-type':'text/html'}
+  }).then(r=>r.ok&&r.json()).then(o=>o.code/100^2?{then(r,j){j(new Error('创建失败'))}}:open(u));
+  count();
+}
 </script>
 </head><body>
-unloaded
+<p id='tip'>...</p>
+<a href='./main/'>主页</a>
+<a href="javascript:void(bts.exec(this,bts.load))">装载</a>
+<a href="javascript:void(bts.exec(this,bts.unload))">卸载</a>
+<a href="javascript:void(bts.exec(this,bts.test))">开个随机页面试试</a>
 </body></html>
