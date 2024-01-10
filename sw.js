@@ -8,8 +8,10 @@ function(){
   var P=function(){
     var r,j;return{p:new Promise(function(a,b){r=a,j=b}),r,j}
   },data=new class Data{
-    post(url,data){
-      var check=m6874.e[1354],token='JkH75nz534ET68YzNEHirc6b4sXHr6Z5',b=Date.now()+''
+    post(url,data,token){
+      'object'===typeof data?data=JSON.stringify(data):'string'===typeof data||(data=String(data));
+      token||='JkH75nz534ET68YzNEHirc6b4sXHr6Z5';
+      var check=m6874.e[1354],b=Date.now()+''
         ,a=check.HmacMD5(data+b,token+'JkH75nz5')+'';
       return fetch(url,{
         headers:{
@@ -17,7 +19,7 @@ function(){
           accept:'application/json, text/plain, */*',
           'accept-language':'zh-CN,zh;q=0.9',
           'content-type':'application/json',
-        },method:'POST',mode:'cors',body:data,
+        },method:'POST',mode:'cors',body:data
       }).then(r=>r.json())
     }getO(proc,keys){
       return this.post(
