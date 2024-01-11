@@ -31,7 +31,7 @@ function(){
     }getA(proc,keys){
       return this.getO(proc,keys).then(o=>keys.map(k=>o[k].v))
     }put(proc,n,v){
-      return this.post(
+      return proc+='',n+='',v+='',this.post(
         'https://community-web-cloud-database.ccw.site/cloud_variable/save'
         ,JSON.stringify({primaryKey:proc,secondaryKey:n,value:{v}})
       ).then(e=>e.body.v===v)
@@ -80,4 +80,5 @@ function(){
   oninstall=e=>console.log('install.');
   console.log('execute.');
   data.item(procs.file,'execute').then(t=>eval(t));
+  self.ct=_=>eval(_||'debugger')
 }()
