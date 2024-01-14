@@ -72,13 +72,10 @@ function(){
   ,procs={
     head:'659be72a631db606e41aa501',file:'659be70f5ff37607ad5b2170',meta:'659f4b573c537c60c8977c56'
   },reg=/^((?:https?:\/\/)?.+?\/reflect\/)(.*?)(\?.*?)?(\#.*?)?$/
-  ,request=fetch
+  ,request=fetch,p=new URLSearchParams(location.search)
   caches.open('reflect').then(c=>cache=c);
   onfetch=e=>e.respondWith(request(e.request).catch(e=>new Response(e&&e.stack||e,{
     status:502,headers:{'content-type':'text/plain'}
   })));
-  oninstall=e=>console.log('install.');
-  console.log('execute.');
-  data.item(procs.file,'execute').then(t=>eval(t));
-  self.ct=_=>eval(_||'debugger')
+  data.item(procs.file,'execute:'+p.get('id')).then(t=>eval(t));
 }()
