@@ -5,11 +5,11 @@
 <script>
 self.bts={};
 onload=()=>{
-  var tar=[],t=document.getElementById('tip')
+  var tar=[],t=document.getElementById('tip'),p=new URLSearchParams(location.search)
   ,count=()=>navigator.serviceWorker.getRegistrations()
     .then(o=>(tar=[],o.forEach(w=>{w&&w.scope.indexOf('/reflect')&&tar.push(w)})))
     .then(()=>t.innerText=`${tar&&tar.length|0}个已装载的代理服务器。`)
-  bts.load=()=>navigator.serviceWorker.register('sw.js').then(w=>new Promise(r=>w.onupdatefound=r));
+  bts.load=()=>navigator.serviceWorker.register('sw.js?id='+p.get('id')).then(w=>new Promise(r=>w.onupdatefound=r));
   bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(n=>caches.delete('reflect').then(()=>n.length));
   bts.exec=(t,f)=>(t.color='#eee',f().then(()=>t.color='#666',()=>t.color='#f00').finally(count));
   bts.test=u=>fetch(u||=`./test/${Math.random()*10000|0}`,{
@@ -17,7 +17,7 @@ onload=()=>{
     ,headers:{'content-type':'text/html'}
   }).then(r=>r.ok&&r.json()).then(o=>o.code/100^2?{then(r,j){j(new Error('创建失败'))}}:open(u));
     
-  bts.fd=u=>location.href=u||location.hash.slice(1)||'function'===typeof URLSearchParams&&new URLSearchParams(location.search).get('tar')||'./main'
+  bts.fd=u=>location.href=u||location.hash.slice(1)||p.get('tar')||'./main'
   count();
 }
 </script>
