@@ -12,7 +12,7 @@ onload=()=>{
     .then(()=>t.innerText=`${tar&&tar.length|0}个已装载的代理服务器。`)
   ;t.innerText='...'
   ,bts.load=u=>navigator.serviceWorker.register(u||(u='./sw.js?id='+p.get('id')+'&t=.js')).then(w=>new Promise(r=>w.onupdatefound=e=>r()),e=>import(u).then(m=>'...',e=>e&&e.stack||String(e)))
-  ,bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(n=>caches.delete('reflect')).then(e=>{})
+  ,bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(e=>{})
   ,bts.clear=()=>caches.delete('reflect').then(e=>{})
   ,bts.exec=(t,f,...a)=>(t.style.color='#eee',f(...a).then(n=>{n&&(t.innerText=n),t.style.color='#666'},n=>{n&&(t.innerText=n),t.style.color='#f00'}).finally(count))
   ,bts.test=u=>fetch('',{method:'TEST'}).then(r=>r.ok&&r.text(),e=>{}).then(t=>t||'失败')
