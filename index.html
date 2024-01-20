@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html><head>
+<html lang='zh-cn'><head>
 <meta charset='UTF-8'>
 <title>代理服务器管理页</title>
+<meta name='keywords' content='NetLogo,海龟实验室,PWA,JavaScript,HTML'>
 <script>
 self.bts={};
 onload=()=>{
@@ -9,22 +10,21 @@ onload=()=>{
   ,count=()=>navigator.serviceWorker.getRegistrations()
     .then(o=>(tar=[],o.forEach(w=>{w&&w.scope.indexOf('/reflect')&&tar.push(w)})))
     .then(()=>t.innerText=`${tar&&tar.length|0}个已装载的代理服务器。`)
-  bts.load=()=>navigator.serviceWorker.register('sw.js?id='+p.get('id')).then(w=>new Promise(r=>w.onupdatefound=r));
-  bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(n=>caches.delete('reflect').then(()=>n.length));
-  bts.exec=(t,f)=>(t.color='#eee',f().then(()=>t.color='#666',()=>t.color='#f00').finally(count));
-  bts.test=u=>fetch(u||=`./test/${Math.random()*10000|0}`,{
-    method:'PUT',body:new Uint8Array(65536).map(()=>Math.random()*256)
-    ,headers:{'content-type':'text/html'}
-  }).then(r=>r.ok&&r.json()).then(o=>o.code/100^2?{then(r,j){j(new Error('创建失败'))}}:open(u));
-    
-  bts.fd=u=>location.href=u||location.hash.slice(1)||p.get('tar')||'./main'
-  count();
+  ;t.innerText='...'
+  ,bts.load=u=>navigator.serviceWorker.register(u||(u='./sw.js?id='+p.get('id')+'&t=.js')).then(w=>new Promise(r=>w.onupdatefound=e=>r()),e=>import(u).then(m=>'...',e=>e&&e.stack||String(e)))
+  ,bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(n=>caches.delete('reflect')).then(e=>{})
+  ,bts.clear=()=>caches.delete('reflect').then(e=>{})
+  ,bts.exec=(t,f,...a)=>(t.style.color='#eee',f(...a).then(n=>{n&&(t.innerText=n),t.style.color='#666'},n=>{n&&(t.innerText=n),t.style.color='#f00'}).finally(count))
+  ,bts.test=u=>fetch('',{method:'TEST'}).then(r=>r.ok&&r.text(),e=>{}).then(t=>t||'失败')
+  ,bts.fd=u=>location.href=u||location.hash.slice(1)||p.get('tar')||'./main'
+  ,count()
 }
 </script>
 </head><body>
-<p id='tip'>...</p>
-<a href='javascript:void(bts.fd())'>跳转链接</a>
-<a href="javascript:void(bts.exec(this,bts.load))">装载</a>
-<a href="javascript:void(bts.exec(this,bts.unload))">卸载</a>
-<a href="javascript:void(bts.exec(this,bts.test))">开个随机页面试试</a>
+<p id="tip">未启用JavaScript</p>
+<a href="javascript:void(0)" onclick="bts.fd()">跳转链接</a>
+<a href="javascript:void(1)" onclick="bts.exec(this,bts.load)">装载</a>
+<a href="javascript:void(2)" onclick="bts.exec(this,bts.unload)">卸载</a>
+<a href="javascript:void(3)" onclick="bts.clear(this,bts.unload)">清理缓存</a>
+<a href="javascript:void(4)" onclick="bts.exec(this,bts.test)">测试</a>
 </body></html>
