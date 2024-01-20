@@ -9,7 +9,7 @@
   },Data=class Data{
     constructor(proc,token,age){
       this.proc=proc||'659f4b573c537c60c8977c56',this.token=token||'JkH75nz534ET68YzNEHirc6b4sXHr6Z5';
-      this._cache={},this.tid=0,this.age=age||100;
+      this.cache=new Map,this.tid=0,this.age=age||100;
     }post(url,data,token){
       return fetch(url,this.pre_post(
         'object'===typeof data?JSON.stringify(data):'string'===typeof data?data:String(data),
