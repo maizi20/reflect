@@ -37,7 +37,7 @@
       return this.getO([key]).then(o=>o[key]);
     }b64write(b64,arr){
       var buf=new Uint8Array(_buffer),i=-1,j=-1,l=0,b=0,n=0,m=0;
-      for(l=te.encodeInto(b64,buf).written|0,arr||=new Uint8Array((b64.length*3>>2)-(buf[l-1]^61?0:buf[l-2]^61?1:2));++i<l;)
+      for(l=te.encodeInto(b64,buf).written|0,arr||(arr=new Uint8Array((b64.length*3>>2)-(buf[l-1]^61?0:buf[l-2]^61?1:2)));++i<l;)
         (b=b64retbl[buf[i]]|0)&-64||(
           m=m<<6|b,(n=n+6|0)<8||(arr[++j]=m>>(n=n-8|0)&255)
         )
