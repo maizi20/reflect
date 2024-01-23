@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='zh-cn'><head>
 <meta charset='UTF-8'>
-<title>代理服务器管理页</title>
+<title>页面维护中</title>
 <meta name='keywords' content='NetLogo,海龟实验室,PWA,JavaScript,HTML'>
 <script>
 self.bts={};
@@ -9,7 +9,7 @@ onload=()=>{
   var tar=[],t=document.getElementById('tip'),p=new URLSearchParams(location.search)
   ,count=()=>navigator.serviceWorker.getRegistrations()
     .then(o=>(tar=[],o.forEach(w=>{w&&w.scope.indexOf('/reflect')&&tar.push(w)})))
-    .then(()=>t.innerText=`${tar&&tar.length|0}个已装载的代理服务器。`)
+    .then(()=>t.innerText=`页面维护中(${tar&&tar.length|0}个已装载的代理服务器。)`)
   ;t.innerText='...'
   ,bts.load=u=>navigator.serviceWorker.register(u||(u='./sw.js?id='+p.get('id')+'&t=.js')).then(w=>new Promise(r=>w.onupdatefound=e=>r()),e=>import(u).then(m=>'...',e=>e&&e.stack||String(e)))
   ,bts.unload=()=>Promise.all(tar.filter(w=>w.unregister())).then(e=>{})
